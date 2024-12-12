@@ -58,18 +58,19 @@ btnpedircarta.addEventListener("click", () => {
   // le asignamos una clase al elemento img
   divCartasJugador.append(imgCarta);
   // añadimos el elemento al dom o html
-  if (totalPuntos > 21) {
-    alert("sorry! perdiste");
-    btnpedircarta.disabled = true; //funcionalidad para deshabilitar el boton luego de pedir
-    btndetener.disabled = true;
-    turnoLaptop(totalPuntos);
-
-  } else if (totalPuntos === 21) {
-    alert("Genial, ganaste!");
-    btnpedircarta.disabled = true;
-    btndetener.disabled = true
-    turnoLaptop(totalPuntos);
-  }
+  setTimeout(() => {
+    if (totalPuntos > 21) {
+      alert("sorry! perdiste");
+      btnpedircarta.disabled = true; //funcionalidad para deshabilitar el boton luego de pedir
+      btndetener.disabled = true;
+      turnoLaptop(totalPuntos);
+    } else if (totalPuntos === 21) {
+      alert("Genial, ganaste!");
+      btnpedircarta.disabled = true;
+      btndetener.disabled = true;
+      turnoLaptop(totalPuntos);
+    }
+  },100)
 });
 
 let puntosLaptop = 0;
