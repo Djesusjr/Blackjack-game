@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <title>Blackjack</title>
+  </head>
+  <body>
+    <header class="titulo">Blackjack</header>
+    <!-- div para los botones -->
+    <!-- clase row mt-2 = margin top 2px -->
+    <div class="row mt-2">
+      <div id="divbotones" class="col text-center">
+        <button id="newgame" class="btn btn-danger">Nuevo juego</button>
+        <button id="pedircarta" class="btn btn-primary">Pedir carta</button>
+        <button id="detener" class="btn btn-primary">Detener</button>
+      </div>
+    </div>
+    <!-- div contenedor de filas  -->
+    <div class="row container">
+      <!-- clase columna -->
+      <div class="col">
+        <h1>David - <small>0</small></h1>
+
+        <div id="jugador-carta">
+          <!-- <img class="carta" src="assets/cartas/2C.png"> -->
+          <!-- <img class="carta" src="assets/cartas/2C.png" /> -->
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="row container mt-2">
+      <div class="col">
+        <h1>Laptop - <small>0</small></h1>
+
+        <div id="computadora-carta">
+          <!-- <img class="carta" src="assets/cartas/3C.png"> -->
+          <!-- <img class="carta" src="assets/cartas/4C.png" /> -->
+        </div>
+      </div>
+    </div>
+
+    
+    <script src="assets/js/underscorejs.js"></script>
+    <script src="assets/js/game.js"></script>
+  </body>
+</html>
