@@ -100,11 +100,11 @@ const turnoLaptop = (totalPuntos) => {
     if (puntosLaptop === totalPuntos) {
       alert("Nadie gana :(");
     } else if (totalPuntos > 21) {
-      alert("Computadora gana");
+      alert("Computadora gana!");
     } else if (puntosLaptop > 21) {
       alert("Jugador Gana");
     } else {
-      alert("Computadora Gana");
+      alert("Computadora Gana!");
     }
   }, 100);
 };
