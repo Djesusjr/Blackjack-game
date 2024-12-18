@@ -1,139 +1,132 @@
-  (() => {
-    let deck = [];
-    const tipos = ["C", "D", "H", "S"];
-    especiales = ["A", "J", "Q", "K"];
+(() => {
+  ("use strict");
 
-    let puntosJugadores = []
+  let deck          = [];
+  const tipos       = ["C", "D", "H", "S"],
+        especiales  = ["A", "J", "Q", "K"];
 
-    const divCartasJugador = document.querySelector("#jugador-carta"),
-          smalls = document.querySelectorAll("small"),
-          divCartasLaptop = document.querySelector("#computadora-carta"),
-          btnpedircarta = document.querySelector("#pedircarta"),
-          btndetener = document.querySelector("#detener"),
-          btnNewGame = document.querySelector("#newgame");
+  let puntosJugadores = []
 
-    //this function initializes the game
-    const inicializarGame = (numJugadores = 1) => {
-      deck = []
-      for (let i = 0; i < numJugadores; i++) {
-        puntosJugadores.push(0)
-      }
-      console.log({puntosJugadores});
-    };
+// referencias al html
+  const btnpedircarta = document.querySelector("#pedircarta"),
+        btndetener = document.querySelector("#detener"),
+        btnNewGame = document.querySelector("#newgame");
 
-    // esta funcion crea un nuevo deck
-    const crearDeck = () => {
-      for (let i = 2; i <= 10; i++) {
-        for (const tipo of tipos) {
-          deck.push(i + tipo);
-        }
-      }
+  const divCartasJugadores = document.querySelectorAll('.divcartas')
+        puntosHTML = document.querySelectorAll("small");
+
+  const inicializaJuego = ( numJugadores = 2 ) => {
+    deck = crearDeck()  
+    puntosJugadores = Array(puntosHTML.length).fill(0);
+    }
+    console.log(puntosJugadores);
+
+
+  const crearDeck = () => {
+    deck = []
+    for (let i = 2; i <= 10; i++) {
       for (const tipo of tipos) {
-        for (const esp of especiales) {
-          deck.push(esp + tipo);
-        }
+        deck.push(i + tipo);
       }
-      // la funcion _.shuffle mezcla la baraja esta funcion se trajo de underscorejs
-      return _.shuffle(deck);
-    };
-
-    // esta funcion me permite pedir una carta
-    const pedirCarta = () => {
-      if (deck.length === 0) {
-        throw "no hay cartas en el deck";
+    }
+    for (const tipo of tipos) {
+      for (const esp of especiales) {
+        deck.push(esp + tipo);
       }
-      return deck.shift();
-    };
-    
-    // esta funcion toma determina si el valor de una carta es un numero o una letra
-    const valorCarta = (carta) => {
-      const valor = carta.slice(0, -1);
-      return isNaN(valor) ? (valor === "A" ? 11 : 10) : Number(valor);
-    };
-    
-    const acumularPuntos = (carta, turno) => {
-        puntosJugadores[turno] = puntosJugadores[turno] + valorCarta(carta);
-        // vamos sumando el valor de las cartas mostradas
-        smalls[turno].innerText = puntosJugadores[turno]
-        return puntosJugadores[turno]
-      }
+    }
+    // la funcion _.shuffle mezcla la baraja esta funcion se trajo de underscorejs
+    return _.shuffle(deck);
+  };
+
+  const pedirCarta = () => {
+    return (deck.length === 0) ?
+      (() => { throw ("No hay cartas en el deck") })() :
+      deck.pop();
+  };
+  
+  const valorCarta = (carta) => {
+    const valor = carta.slice(0, -1);
+    return isNaN(valor) ? (valor === "A" ? 11 : 10) : Number(valor);
+  };
+
+  const acumularPuntos = ( carta, turno ) => {
+    puntosJugadores[turno] += valorCarta(carta);
+    puntosHTML[turno].innerText = puntosJugadores[turno]
+    return puntosJugadores[turno]
+  }
+
+  const crearCarta = (carta, turno) => {
+
+    const imgCarta = document.createElement("img");
+    imgCarta.src = `assets/cartas/${carta}.png`;
+    imgCarta.classList.add("carta");
+    divCartasJugadores[turno].append(imgCarta);
+  }
 
 
 
-    btnpedircarta.addEventListener("click", () => {
+  const turnoLaptop = (totalPuntos) => {
+    let puntosLaptop = 0
+
+    do {
       const carta = pedirCarta();
-      let puntosJugador = acumularPuntos(carta,0)
-      //añadimos el valor de puntos del juador a la etiqueta small del jugador
-      const imgCarta = document.createElement("img");
-      // creamos un nuevo elemento img
-      imgCarta.src = `assets/cartas/${carta}.png`;
-      // asignamos la ruta de donde tomara la imagen el elemento img
-      imgCarta.classList.add("carta");
-      // le asignamos una clase al elemento img
-      divCartasJugador.append(imgCarta);
-      // añadimos el elemento al dom o html
-      setTimeout(() => {
-        if (puntosJugador > 21) {
-          alert("sorry! perdiste");
-          btnpedircarta.disabled = true; //funcionalidad para deshabilitar el boton luego de pedir
-          btndetener.disabled = true;
-          turnoLaptop(puntosJugador);
-        } else if (puntosJugador === 21) {
-          alert("Genial, ganaste!");
-          btnpedircarta.disabled = true;
-          btndetener.disabled = true;
-          turnoLaptop(puntosJugador);
-        }
-      }, 100);
-    });
-
-
-    const turnoLaptop = (totalPuntos) => {
-      do {
-        const carta = pedirCarta();
-        puntosJugadores[-1] = acumularPuntos(carta,puntosJugadores.length-1)
-        const imgCarta = document.createElement("img");
-        // creamos un nuevo elemento img
-        imgCarta.src = `assets/cartas/${carta}.png`;
-        // asignamos la ruta de donde tomara la imagen el elemento img
-        imgCarta.classList.add("carta");
-        // le asignamos una clase al elemento img
-        divCartasLaptop.append(imgCarta);
-        // añadimos el elemento al dom o html
-        if (totalPuntos > 21) {
-          break;
-        }
-      } while (puntosJugadores[-1] < totalPuntos && totalPuntos <= 21);
-      setTimeout(() => {
-        if (puntosJugadores[-1] === puntosJugadores[0]) {
-          alert("Nadie gana :(");
-        } else if (totalPuntos > 21) {
-          alert("Computadora gana!");
-        } else if (puntosJugadores[-1] > 21) {
-          alert("Jugador Gana");
-        } else {
-          alert("Computadora Gana!");
-        }
-      }, 100);
-    };
-
-
-    btndetener.addEventListener("click", () => {
-      btnpedircarta.disabled = true;
-      btndetener.disabled = true;
-      turnoLaptop(puntosJugadores[0]);
-    });
-
+      puntosLaptop = acumularPuntos(carta, puntosJugadores.length - 1)
+      crearCarta(carta, puntosJugadores.length - 1);
+      if (totalPuntos > 21) break;
+      }
     
+    while ((puntosLaptop < totalPuntos) && (totalPuntos <= 21));
 
-    btnNewGame.addEventListener("click", () => {
-      console.clear();
-      inicializarGame();
-      divCartasJugador.innerHTML = "";
-      divCartasLaptop.innerHTML = "";
-      btnpedircarta.disabled = false;
-      btndetener.disabled = false;
-      smalls[0].innerText = 0;
-      smalls[1].innerText = 0;
-    });
-  })();
+    setTimeout(() => {
+      if (puntosLaptop === totalPuntos) {
+        alert("Nadie gana :(");
+      } else if (totalPuntos > 21) {
+        alert("Computadora gana!");
+      } else if (puntosLaptop > 21) {
+        alert("Jugador Gana");
+      } else {
+        alert("Computadora Gana!");
+      }
+    }, 100);
+  };
+
+  btnpedircarta.addEventListener("click", () => {
+
+    const carta = pedirCarta();
+    const puntosJugador = acumularPuntos(carta, 0)
+    
+    crearCarta(carta,0)
+    
+    setTimeout(() => {
+      if (puntosJugador > 21) {
+        turnoLaptop(puntosJugador);
+        btnpedircarta.disabled = true; //funcionalidad para deshabilitar el boton luego de pedir
+        btndetener.disabled = true;  
+      }
+      else if (puntosJugador === 21) {
+        turnoLaptop(puntosJugador);
+        btnpedircarta.disabled = true;
+        btndetener.disabled = true;
+      }
+    }, 100);
+  });
+
+  btndetener.addEventListener("click", () => {
+    btnpedircarta.disabled = true;
+    btndetener.disabled = true;
+    turnoLaptop(puntosJugadores[0]);
+  });
+
+  
+
+  btnNewGame.addEventListener("click", () => {
+    console.clear();
+    inicializaJuego(puntosHTML.length); // Asegúrate de reiniciar con el número correcto de jugadores
+    divCartasJugadores.forEach((div) => (div.innerHTML = ""));
+    puntosHTML.forEach((html) => (html.innerText = "0"));
+    btnpedircarta.disabled = false;
+    btndetener.disabled = false;
+  });
+
+})();
+// el codigo se llama dentro de una funcion de flecha autoinvocada
