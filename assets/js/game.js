@@ -7,7 +7,7 @@
 
   let puntosJugadores = []
 
-// referencias al html
+// referencias al html mejor
   const btnpedircarta = document.querySelector("#pedircarta"),
         btndetener = document.querySelector("#detener"),
         btnNewGame = document.querySelector("#newgame");
