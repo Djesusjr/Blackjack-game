@@ -5,7 +5,7 @@
   const tipos       = ["C", "D", "H", "S"],
         especiales  = ["A", "J", "Q", "K"];
 
-  let puntosJugadores = []
+  let puntosJugadores = [];
 
 // referencias al html mejor
   const btnpedircarta = document.querySelector("#pedircarta"),
